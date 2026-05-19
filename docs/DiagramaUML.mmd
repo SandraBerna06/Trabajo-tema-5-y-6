@@ -1,0 +1,35 @@
+classDiagram
+    class AlarmManager {
+        -List~Alarm~ alarms
+        -boolean vacationMode
+        +addAlarm(Alarm alarm) void
+        +removeAlarm(String id) boolean
+        +getUpcomingAlarms(LocalDateTime now) List~Alarm~
+    }
+
+    class Alarm {
+        -String id
+        -LocalTime time
+        -boolean isActive
+        -AlarmCategory category
+        -boolean requiresMathChallenge
+        +getNextTriggerTime(LocalDateTime from) LocalDateTime
+        +stop(Integer mathAnswer) boolean
+    }
+
+    class MathChallenge {
+        -int operandA
+        -int operandB
+        -int correctAnswer
+        +verify(int attempt) boolean
+    }
+
+    class AlarmCategory {
+        <<enumeration>>
+        TRABAJO
+        ESTUDIO
+    }
+
+    AlarmManager "1" *-- "*" Alarm : Gestiona >
+    Alarm "*" o-- "1" AlarmCategory : Clasificada por >
+    Alarm "1" *-- "0..1" MathChallenge : Genera >
